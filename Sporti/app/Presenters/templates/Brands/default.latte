@@ -1,0 +1,11 @@
+{block content}
+
+<a class="ajax" n:href=showAddBrandDialog!>+ Přidat značku</a>
+{dump $basePath}
+{snippet modal}
+	{if isset($showModal)}
+		<a class="ajax float-right" n:href="closeModal!">X</a>
+		{control formBrand}
+	{/if}
+{/snippet}
+

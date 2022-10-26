@@ -3,6 +3,12 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
-class SecuredPresenter extends BasePresenter {
+use Nette\Application\UI\Presenter;
+
+class SecuredPresenter extends Presenter {
+
+	public function __construct() {
+		parent::__construct();
+	}
 
 }

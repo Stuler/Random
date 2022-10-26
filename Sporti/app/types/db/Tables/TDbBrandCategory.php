@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\types\db\Tables;
 
+use Nette\Utils\ArrayHash;
+
 /**
  * Table: brand_category
  * @property int    $id;
@@ -11,6 +13,6 @@ namespace App\types\db\Tables;
  * @property string $note;
  * @property int    $created_by;
  */
-class TDbBrandCategory {
+class TDbBrandCategory extends ArrayHash {
 
 }

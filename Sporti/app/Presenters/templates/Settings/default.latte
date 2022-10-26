@@ -1,10 +1,10 @@
 {block content}
 
-<a class="ajax" n:href=showAddBrandDialog!>+ Přidat značku</a>
+<a class="ajax" n:href=showAddBrandCategoryDialog!>+ Přidat kategorii</a>
 {snippet modal}
 	{if isset($showModal)}
 		<a class="ajax float-right" n:href="closeModal!">X</a>
-		{control formBrand}
+		{control formBrandCategory}
 	{/if}
 {/snippet}
 

@@ -9,6 +9,7 @@ search:
 			- *DataManager
 			- *ProcessManager
 			- *Process
+			- *Manager
 
 application:
 	errorPresenter: Error

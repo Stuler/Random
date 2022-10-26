@@ -1,2 +1,10 @@
 services:
 	- App\Router\RouterFactory::createRouter
+	authenticator: App\Model\UserManager
+	- App\Model\AuthorizatorFactory::create
+#	security.authorizator:
+#		setup:
+#		- addResource(Brands)
+#		- addResource(Dashboard)
+#		- addResource(Settings)
+#		- allow(admin)

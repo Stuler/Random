@@ -8,3 +8,29 @@
 	{/if}
 {/snippet}
 
+<div n:snippet="brandsViewer">
+	<table>
+		<thead>
+		<tr>
+			<th>Název
+				<a n:href="changeOrder! order=>'ASC'"><i class="fas fa-arrow-up"></i></a>
+				<a n:href="changeOrder! order=>'DESC'"><i class="fas fa-arrow-down"></i></a>
+			</th>
+			<th>Akce</th>
+		</tr>
+		</thead>
+		<tbody>
+		{foreach $brands as $brand}
+			<tr>
+				<td>{$brand->label}</td>
+				<td>
+					<span><a n:href="deleteBrand! id=>$brand->id">Smazat</a></span>
+					<span><a n:href="showAddBrandDialog! id=>$brand->id">Editovat</a></span>
+				</td>
+			</tr>
+		{/foreach}
+		</tbody>
+	</table>
+</div>
+
+

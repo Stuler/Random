@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use App\Model\DataSource\Form\BrandFormDataSource;
+use App\Model\DataSource\Viewer\BrandViewerDataSource;
 use App\Model\Exceptions\BrandsException;
+use App\Model\ProcessManager\BrandProcessManager;
 use App\Model\Repository\Table\BrandCategoryRepository;
 use App\Model\Repository\Table\BrandRepository;
 use App\types\Form\TFormBrand;
@@ -12,17 +14,19 @@ use Nette\Application\UI\Form;
 
 class BrandsPresenter extends SecuredPresenter {
 
+	private ?string $order = null;
+
 	public function __construct(
-		private BrandRepository         $brandRepo,
 		private BrandCategoryRepository $brandCategoryRepo,
 		private BrandFormDataSource     $brandFormDS,
+		private BrandViewerDataSource   $brandViewerDS,
 	) {
 		parent::__construct();
 	}
 
 	public function renderDefault() {
 		$t = $this->template;
-		$t->brands = $this->brandRepo->findAllActive()->fetchAll();
+		$t->brands = $this->brandViewerDS->getActiveBrands($this->order);
 	}
 
 	/**
@@ -38,6 +42,19 @@ class BrandsPresenter extends SecuredPresenter {
 		$this->redrawControl();
 	}
 
+	public function handleChangeOrder(string $order) {
+		$this->order = $order;
+		$this->redrawControl("brandsViewer");
+	}
+
+	/**
+	 * Marks brand as deleted
+	 */
+	public function handleDeleteBrand(int $id) {
+		$this->brandViewerDS->deleteBrand($id);
+		$this->redrawControl("brandsViewer");
+	}
+
 	/**
 	 * Basic brand edit/create form
 	 * TODO: add logo uploader?
@@ -50,7 +67,7 @@ class BrandsPresenter extends SecuredPresenter {
 
 		$form->addHidden("id");
 		$form->addText("label", "Název")->setRequired();
-		$form->addSelect("category_id", "Kategorie", $brandCategories)->setRequired()->setPrompt("?");
+		$form->addSelect("brand_category_id", "Kategorie", $brandCategories)->setRequired()->setPrompt("?");
 		$form->addText("description", "Popis");
 		$form->addTextArea("note", "Poznámka");
 		$form->addSubmit("save", "Uložit");

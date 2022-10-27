@@ -35,7 +35,7 @@ class BrandFormDataSource {
 	 * @throws \App\Model\Exceptions\BrandsException
 	 */
 	public function save(TFormBrand $values): int {
-		return $this->brandPM->saveBrand($values);
+		return $this->brandPM->save($values);
 	}
 
 }

@@ -20,7 +20,7 @@ class BrandProcess {
 	 * Saves brand values into db
 	 * @throws \App\Model\Exceptions\BrandsException
 	 */
-	public function saveBrand(TFormBrand $values): int {
+	public function save(TFormBrand $values): int {
 		if ($this->validateBrandLabel($values->label) === false) {
 			throw new BrandsException("Značka se stejným názvem již existuje!");
 		}
@@ -50,7 +50,7 @@ class BrandProcess {
 	/**
 	 * Marks brand as deleted
 	 */
-	public function softDeleteDateBrand(int $brandId) {
+	public function softDeleteDate(int $brandId) {
 		$this->brandRepo->softDeleteDate($brandId, LoginRepository::ADMIN_ID);
 	}
 }

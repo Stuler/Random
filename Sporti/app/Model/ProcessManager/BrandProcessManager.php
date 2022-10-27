@@ -17,8 +17,12 @@ class BrandProcessManager {
 	 * Saves brand data into db
 	 * @throws \App\Model\Exceptions\BrandsException
 	 */
-	public function saveBrand(TFormBrand $values): int {
-		return $this->brandProcess->saveBrand($values);
+	public function save(TFormBrand $values): int {
+		return $this->brandProcess->save($values);
+	}
+
+	public function delete(int $id) {
+		$this->brandProcess->softDeleteDate($id);
 	}
 
 }

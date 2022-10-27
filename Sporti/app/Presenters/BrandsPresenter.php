@@ -42,6 +42,16 @@ class BrandsPresenter extends SecuredPresenter {
 		$this->redrawControl();
 	}
 
+	/**
+	 * Closes brand form modal window
+	 */
+	public function handleCloseDialog() {
+		$this->redrawControl("modal");
+	}
+
+	/**
+	 * Changes brands order
+	 */
 	public function handleChangeOrder(string $order) {
 		$this->order = $order;
 		$this->redrawControl("brandsViewer");
@@ -83,10 +93,4 @@ class BrandsPresenter extends SecuredPresenter {
 		return $form;
 	}
 
-	/**
-	 * Closes brand form modal window
-	 */
-	public function handleCloseModal() {
-		$this->redrawControl("modal");
-	}
 }

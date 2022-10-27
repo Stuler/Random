@@ -9,9 +9,6 @@ use Nette\Database\Table\Selection;
 
 class BrandViewerDataSource {
 
-	public const ORDER_ASC = "ASC";
-	public const ORDER_DESC = "DESC";
-
 	public function __construct(
 		private BrandProcessManager $brandPM,
 		private BrandRepository     $brandRepo,
@@ -19,19 +16,15 @@ class BrandViewerDataSource {
 	}
 
 	/**
-	 * Returns all undeleted brands data array
+	 * Returns all undeleted brands configured in accordance with pagination and chosen order
 	 */
-	public function getActiveBrands(?string $order = null): array {
-		bdump($order);
-		$selection = $this->brandRepo->findAllActive();
-		if ($order === self::ORDER_ASC) {
-			$selection->order("label ASC");
-		} elseif ($order === self::ORDER_DESC) {
-			$selection->order("label DESC");
-		}
-		return $selection->fetchAll();
+	public function getActiveBrands(?string $order = null, ?int $limit = null, ?int $offset = null): array {
+		return $this->brandRepo->fetchActiveBrands($order, $limit, $offset);
 	}
 
+	/**
+	 * Marks brand record as deleted by user in db
+	 */
 	public function deleteBrand(int $id) {
 		$this->brandPM->delete($id);
 	}

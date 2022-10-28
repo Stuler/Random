@@ -10,30 +10,56 @@ use Nette\Application\UI\Control;
 use Nette\Database\Table\Selection;
 use Nette\Utils\Paginator;
 
+/**
+ * Component represents simple viewer
+ * Items labels/names are shown to user
+ * Basic functions (changing view order, edit, delete) are allowed
+ */
 class ViewerComp extends Control {
 
+	/**
+	 * Returns desired page from paginator
+	 */
 	#[Persistent]
 	public int $page = 1;
 
+	/**
+	 * Basic array of items data
+	 */
 	#[Persistent]
 	public ?Selection $items = null;
 
+	/**
+	 * Current order of items
+	 */
 	#[Persistent]
 	public ?string $order = null;
 
+	/**
+	 * Count of number of items shown in one page
+	 */
 	#[Persistent]
 	public int $itemsPerPage = Constants::ITEMS_PER_PAGE;
 
+	/**
+	 * Selection table column to show
+	 */
 	public string $columnLabel;
 
+	/**
+	 * Number of pages shown adjacent to the current paginator page
+	 */
 	public int $radius = Constants::PAGES_SHOWN_RADIUS;
 
+	/**
+	 * Calls processes on DELETE button click event
+	 */
 	public array|\Closure $onDelete;
 
+	/**
+	 * Calls processes on EDIT button click event
+	 */
 	public array|\Closure $onClick;
-
-	public function __construct() {
-	}
 
 	/**
 	 * TODO: pagination into component
@@ -59,6 +85,9 @@ class ViewerComp extends Control {
 		$t->render();
 	}
 
+	/**
+	 * Returns items data array in accordance with pagination setup
+	 */
 	public function getItemsDataForPaginator(?int $limit = null, ?int $offset = null): array {
 		$selection = $this->items;
 		if ($this->order && in_array($this->order, EOrderType::getCases())) {
@@ -73,22 +102,39 @@ class ViewerComp extends Control {
 		return $selection->fetchAll();
 	}
 
+	/**
+	 * Sets array of items data do view
+	 */
 	public function setItems(selection $items) {
 		$this->items = $items;
 	}
 
+	/**
+	 * Sets column name containing item label
+	 */
 	public function setColumnLabel(string $columnLabel) {
 		$this->columnLabel = $columnLabel;
 	}
 
 	/**
-	 * Changes brands order
+	 * Changes view order
 	 */
 	public function handleChangeOrder(string $order) {
 		$this->order = $order;
 		$this->redrawControl("viewer");
 	}
 
+	/**
+	 * Redirects to page set by user from paginator
+	 */
+	public function handleSetPage(int $page) {
+		$this->page = $page;
+		$this->redrawControl("viewer");
+	}
+
+	/**
+	 * Sets count of items shown in one page
+	 */
 	public function handleSetItemsPerPage(int $itemsPerPage) {
 		$this->itemsPerPage = $itemsPerPage;
 		$this->redrawControl("viewer");
@@ -97,17 +143,16 @@ class ViewerComp extends Control {
 	/**
 	 * Opens brand form in modal window
 	 */
-	public function handleShowAddDialog(?int $id) {
-
-	}
-
-	public function handleDelete(int $id) {
-		$this->onDelete($id);
-	}
-
-	public function handleSetPage(int $page) {
-		$this->page = $page;
+	public function handleShowEditDialog(?int $id) {
+		$this->onClick($id);
 		$this->redrawControl("viewer");
 	}
 
+	/**
+	 * Calls processes on DELETE button click event
+	 */
+	public function handleDelete(int $id) {
+		$this->onDelete($id);
+		$this->redrawControl("viewer");
+	}
 }

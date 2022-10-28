@@ -5,28 +5,22 @@ namespace App\Presenters;
 
 use App\components\Viewer\ViewerComp;
 use App\components\Viewer\ViewerCompFactory;
-use App\Constants;
 use App\Model\DataSource\Form\BrandFormDataSource;
 use App\Model\Exceptions\BrandsException;
+use App\Model\ProcessManager\BrandProcessManager;
 use App\Model\Repository\Table\BrandCategoryRepository;
 use App\Model\Repository\Table\BrandRepository;
 use App\types\Form\TFormBrand;
-use Nette\Application\Attributes\Persistent;
 use Nette\Application\UI\Form;
 
 class BrandsPresenter extends SecuredPresenter {
-
-	//	public ?string $order = null;
-	//
-	//	public int $itemsPerPage = Constants::ITEMS_PER_PAGE;
-	//
-	//	public int $radius = Constants::PAGES_SHOWN_RADIUS;
 
 	public function __construct(
 		private BrandCategoryRepository $brandCategoryRepo,
 		private BrandFormDataSource     $brandFormDS,
 		private ViewerCompFactory       $viewerCompFactory,
 		private BrandRepository         $brandRepo,
+		private BrandProcessManager     $brandPM,
 	) {
 		parent::__construct();
 	}
@@ -41,7 +35,7 @@ class BrandsPresenter extends SecuredPresenter {
 	/**
 	 * Opens brand form in modal window
 	 */
-	public function handleShowAddBrandDialog(?int $id) {
+	public function handleShowAddBrandDialog(?int $id = null) {
 		$this->template->showModal = true;
 		if ($id) {
 			$this['formBrand']->setDefaults(
@@ -56,20 +50,6 @@ class BrandsPresenter extends SecuredPresenter {
 	 */
 	public function handleCloseDialog() {
 		$this->redrawControl("modal");
-	}
-
-	/**
-	 * Marks brand as deleted
-	 */
-	public function handleDeleteBrand(int $id) {
-		//		$this->brandDM->deleteBrand($id);
-		//		$this->redrawControl("brandsViewer");
-
-	}
-
-	public function handleSetItemsPerPage(int $itemsPerPage) {
-		$this->itemsPerPage = $itemsPerPage;
-		$this->redrawControl();
 	}
 
 	/**
@@ -100,19 +80,21 @@ class BrandsPresenter extends SecuredPresenter {
 		return $form;
 	}
 
+	/**
+	 * Brands Viewer component
+	 */
 	public function createComponentViewerComp(): ViewerComp {
 		$viewer = $this->viewerCompFactory->create();
 		$items = $this->brandRepo->findAllActive();
 		$viewer->setItems($items);
 		$viewer->setColumnLabel("label");
 		$viewer->onDelete[] = function ($id) {
-			bdump($id);
+			$this->brandPM->delete($id);
 		};
 
-		$viewer->onClick[] = function ($id) {
-			bdump($id);
+		$viewer->onClick[] = function (?int $id) {
+			$this->handleShowAddBrandDialog($id);
 		};
 		return $viewer;
 	}
-
 }

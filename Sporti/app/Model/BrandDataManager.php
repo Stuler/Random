@@ -1,17 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Model\DataSource\Viewer;
+namespace App\Model;
 
 use App\Model\ProcessManager\BrandProcessManager;
 use App\Model\Repository\Table\BrandRepository;
-use Nette\Database\Table\Selection;
 
-class BrandViewerDataSource {
-
+class BrandDataManager {
 	public function __construct(
-		private BrandProcessManager $brandPM,
 		private BrandRepository     $brandRepo,
+		private BrandProcessManager $brandPM,
 	) {
 	}
 
@@ -20,6 +18,13 @@ class BrandViewerDataSource {
 	 */
 	public function getActiveBrands(?string $order = null, ?int $limit = null, ?int $offset = null): array {
 		return $this->brandRepo->fetchActiveBrands($order, $limit, $offset);
+	}
+
+	/**
+	 * Returns active brands count for paginator algorithm
+	 */
+	public function getActiveBrandsCount(): int {
+		return $this->brandRepo->getBrandsCount();
 	}
 
 	/**

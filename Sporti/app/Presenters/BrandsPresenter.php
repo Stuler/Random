@@ -3,30 +3,43 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
+use App\Model\BrandDataManager;
 use App\Model\DataSource\Form\BrandFormDataSource;
-use App\Model\DataSource\Viewer\BrandViewerDataSource;
 use App\Model\Exceptions\BrandsException;
-use App\Model\ProcessManager\BrandProcessManager;
 use App\Model\Repository\Table\BrandCategoryRepository;
-use App\Model\Repository\Table\BrandRepository;
+use App\types\Enum\EOrderType;
 use App\types\Form\TFormBrand;
+use Nette\Application\Attributes\Persistent;
 use Nette\Application\UI\Form;
+use Nette\Utils\Paginator;
 
 class BrandsPresenter extends SecuredPresenter {
 
-	private ?string $order = null;
+	#[Persistent]
+	public ?string $order = null;
+
+	public const ITEMS_PER_PAGE = 3;
 
 	public function __construct(
 		private BrandCategoryRepository $brandCategoryRepo,
 		private BrandFormDataSource     $brandFormDS,
-		private BrandViewerDataSource   $brandViewerDS,
+		private BrandDataManager        $brandDM,
 	) {
 		parent::__construct();
 	}
 
-	public function renderDefault() {
+	public function renderDefault(int $page = 1, int $itemsPerPage = self::ITEMS_PER_PAGE) {
 		$t = $this->template;
-		$t->brands = $this->brandViewerDS->getActiveBrands($this->order);
+		$paginator = new Paginator();
+		$paginator->setItemCount($this->brandDM->getActiveBrandsCount());
+		$paginator->setItemsPerPage($itemsPerPage);
+		$paginator->setPage($page);
+		if ($this->order && in_array($this->order, EOrderType::getCases())) {
+			$t->brands = $this->brandDM->getActiveBrands($this->order, $paginator->getLength(), $paginator->getOffset());
+		} else {
+			$t->brands = $this->brandDM->getActiveBrands(null, $paginator->getLength(), $paginator->getOffset());
+		}
+		$t->paginator = $paginator;
 	}
 
 	/**
@@ -61,7 +74,7 @@ class BrandsPresenter extends SecuredPresenter {
 	 * Marks brand as deleted
 	 */
 	public function handleDeleteBrand(int $id) {
-		$this->brandViewerDS->deleteBrand($id);
+		$this->brandDM->deleteBrand($id);
 		$this->redrawControl("brandsViewer");
 	}
 

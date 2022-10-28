@@ -4,25 +4,33 @@ declare(strict_types=1);
 namespace App\Model\Repository\Table;
 
 use App\model\BaseModel\BaseModel;
+use App\types\Enum\EOrderType;
 
 class BrandRepository extends BaseModel {
 
 	protected string $table = 'brand';
 
-	public const ORDER_ASC = "ASC";
-	public const ORDER_DESC = "DESC";
-
 	/**
 	 * Returns all undeleted brands configured in accordance with pagination and chosen order
 	 */
-	public function fetchActiveBrands(?string $order = null, ?int $limit = null, ?int $offset = null): array {
+	public function fetchActiveBrands(?string $order = null, ?int $limit = null, ?int $offset = 0): array {
 		$selection = $this->findAllActive();
-		if ($order === self::ORDER_ASC) {
+		if ($order === EOrderType::getASC()) {
 			$selection->order("label ASC");
-		} elseif ($order === self::ORDER_DESC) {
+		} elseif ($order === EOrderType::getDESC()) {
 			$selection->order("label DESC");
+		} else {
+			$selection->order("date_created DESC");
 		}
-		$selection->page($limit, $offset);
+
+		$selection->limit($limit, $offset);
 		return $selection->fetchAll();
+	}
+
+	/**
+	 * Returns active brands count for paginator algorithm
+	 */
+	public function getBrandsCount(): int {
+		return $this->findAllActive()->count();
 	}
 }

@@ -13,8 +13,8 @@
 		<thead>
 		<tr>
 			<th>Název
-				<a n:href="changeOrder! order=>'ASC'"><i class="fas fa-arrow-up"></i></a>
-				<a n:href="changeOrder! order=>'DESC'"><i class="fas fa-arrow-down"></i></a>
+				<a n:href="changeOrder! order=>App\types\Enum\EOrderType::getASC()"><i class="fas fa-arrow-up"></i></a>
+				<a n:href="changeOrder! order=>App\types\Enum\EOrderType::getDESC()"><i class="fas fa-arrow-down"></i></a>
 			</th>
 			<th>Akce</th>
 		</tr>
@@ -31,6 +31,24 @@
 		{/foreach}
 		</tbody>
 	</table>
+</div>
+
+<div class="pagination">
+	{if !$paginator->isFirst()}
+		<a n:href="default, 1">První</a>
+		&nbsp;|&nbsp;
+		<a n:href="default, $paginator->page-1">Předchozí</a>
+		&nbsp;|&nbsp;
+	{/if}
+
+		Stránka {$paginator->getPage()} z {$paginator->getPageCount()}
+
+	{if !$paginator->isLast()}
+		&nbsp;|&nbsp;
+		<a n:href="default, $paginator->getPage() + 1">Další</a>
+		&nbsp;|&nbsp;
+		<a n:href="default, $paginator->getPageCount()">Poslední</a>
+	{/if}
 </div>
 
 

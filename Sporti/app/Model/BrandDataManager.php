@@ -13,6 +13,7 @@ class BrandDataManager {
 	) {
 	}
 
+
 	/**
 	 * Returns all undeleted brands configured in accordance with pagination and chosen order
 	 */

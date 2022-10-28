@@ -1,0 +1,69 @@
+<div n:snippet="viewer">
+	<table>
+		<thead>
+		<tr>
+			<th>Název
+				<a n:href="changeOrder! order=>App\types\Enum\EOrderType::getASC()"><i class="fas fa-arrow-up"></i></a>
+				<a n:href="changeOrder! order=>App\types\Enum\EOrderType::getDESC()"><i class="fas fa-arrow-down"></i></a>
+			</th>
+			<th>Akce</th>
+		</tr>
+		</thead>
+		<tbody>
+		{foreach $items as $item}
+			<tr>
+				<td>{$item->label}</td>
+				<td>
+					<span><a n:href="delete! id=>$item->id">Smazat</a></span>
+					<span><a n:href="showAddDialog! id=>$item->id">Editovat</a></span>
+				</td>
+			</tr>
+		{/foreach}
+		</tbody>
+	</table>
+</div>
+
+<div class="pagination">
+	{*	 Arrow left*}
+		<a class="ajax" n:if="!$paginator->isFirst()" n:href="setPage!, $paginator->page-1"><i class="fas fa-chevron-left"></i></a>
+
+{*	 Number One*}
+		<a  class="ajax" n:if="$left > 1" n:href="setPage!, $paginator->getFirstPage()">{$paginator->getFirstPage()}</a>
+
+{*     Left dots*}
+	<a  class="ajax" n:if="$left > 2" class="disabled">
+			<span>&hellip;</span>
+    </a>
+
+{*     Pages in radius range*}
+	<a n:for="$i = $left; $i <= $right; $i++" n:class="$i == $page ? active, ajax">
+			{if $i == $page}
+				<span>{$i}<span class="sr-only">(current)</span></span>
+			{else}
+				<a  class="ajax" n:href="setPage!, $i">{$i}</a>
+			{/if}
+	</a>
+
+{*	 Right dots*}
+	<a n:if="$right < $pages - 1" class="disabled ajax">
+			<span>&hellip;</span>
+	</a>
+
+{*	 Last page*}
+	<a  class="ajax" n:if="$right < $pages" n:href="setPage!, $paginator->getPageCount()">{$paginator->getPageCount()}</a>
+
+{*	 Arrow right*}
+	<a  class="ajax" n:if="!$paginator->isLast()" n:href="setPage!, $paginator->getPage() + 1"><i class="fas fa-chevron-right"></i></a>
+</div>
+
+<div class="pagination items-count-container">
+	<a n:class="$itemsPerPage == 3 ? active, 'ajax'" n:href="setItemsPerPage! itemsPerPage => 3">3</a>
+	<a n:class="$itemsPerPage == 5 ? active, 'ajax'" n:href="setItemsPerPage! itemsPerPage => 5">5</a>
+	<a n:class="$itemsPerPage == 10 ? active, 'ajax'" n:href="setItemsPerPage! itemsPerPage => 10">10</a>
+</div>
+
+<style>
+	.active {
+		font-weight: bold;
+	}
+</style>

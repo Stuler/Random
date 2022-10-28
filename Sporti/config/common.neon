@@ -1,6 +1,19 @@
 parameters:
 
 search:
+	factory:
+		in: %appDir%/components
+		classes:
+			- *Factory
+		tags:
+			- nette.inject
+	components:
+			in: %appDir%/components
+			classes:
+				- *Comp
+			tags:
+				- nette.inject
+				- nette.autowired
 	section:
 		in: %appDir%/Model
 		classes:

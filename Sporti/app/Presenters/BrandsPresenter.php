@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
+use App\components\Viewer\ViewerComp;
+use App\components\Viewer\ViewerCompFactory;
+use App\Constants;
 use App\Model\BrandDataManager;
 use App\Model\DataSource\Form\BrandFormDataSource;
 use App\Model\Exceptions\BrandsException;
@@ -19,19 +22,23 @@ class BrandsPresenter extends SecuredPresenter {
 	public ?string $order = null;
 
 	#[Persistent]
-	public int $itemsPerPage = 3;
+	public int $itemsPerPage = Constants::ITEMS_PER_PAGE;
 
 	#[Persistent]
-	public int $radius = 4;
+	public int $radius = Constants::PAGES_SHOWN_RADIUS;
 
 	public function __construct(
 		private BrandCategoryRepository $brandCategoryRepo,
 		private BrandFormDataSource     $brandFormDS,
 		private BrandDataManager        $brandDM,
+		private ViewerCompFactory       $viewerCompFactory,
 	) {
 		parent::__construct();
 	}
 
+	/**
+	 * TODO: move paginator config into component
+	 */
 	public function renderDefault(int $page = 1) {
 		$paginator = new Paginator();
 		$paginator->setItemCount($this->brandDM->getActiveBrandsCount());
@@ -45,7 +52,7 @@ class BrandsPresenter extends SecuredPresenter {
 		$t->itemsPerPage = $this->itemsPerPage;
 		$t->page = $page;
 		$t->pages = $pages;
-		$t->left = $page - $this->radius >= 1 ? $page - $this->radius : 1;
+		$t->left = max($page - $this->radius, 1);
 		$t->right = $page + $this->radius <= $pages ? $page + $this->radius : $pages;
 
 		if ($this->order && in_array($this->order, EOrderType::getCases())) {
@@ -130,6 +137,10 @@ class BrandsPresenter extends SecuredPresenter {
 			}
 		};
 		return $form;
+	}
+
+	public function createComponentViewerComp(): ViewerComp {
+		return $this->viewerCompFactory->create();
 	}
 
 }

@@ -18,7 +18,11 @@ class BrandsPresenter extends SecuredPresenter {
 	#[Persistent]
 	public ?string $order = null;
 
-	public const ITEMS_PER_PAGE = 3;
+	#[Persistent]
+	public int $itemsPerPage = 3;
+
+	#[Persistent]
+	public int $radius = 4;
 
 	public function __construct(
 		private BrandCategoryRepository $brandCategoryRepo,
@@ -28,18 +32,35 @@ class BrandsPresenter extends SecuredPresenter {
 		parent::__construct();
 	}
 
-	public function renderDefault(int $page = 1, int $itemsPerPage = self::ITEMS_PER_PAGE) {
-		$t = $this->template;
+	public function renderDefault(int $page = 1) {
 		$paginator = new Paginator();
 		$paginator->setItemCount($this->brandDM->getActiveBrandsCount());
-		$paginator->setItemsPerPage($itemsPerPage);
+		$paginator->setBase(1);
+		$paginator->setItemsPerPage($this->itemsPerPage);
 		$paginator->setPage($page);
+		$page = $paginator->getPage();
+		$pages = $paginator->getPageCount();
+
+		$t = $this->template;
+		$t->itemsPerPage = $this->itemsPerPage;
+		$t->page = $page;
+		$t->pages = $pages;
+		$t->left = $page - $this->radius >= 1 ? $page - $this->radius : 1;
+		$t->right = $page + $this->radius <= $pages ? $page + $this->radius : $pages;
+
 		if ($this->order && in_array($this->order, EOrderType::getCases())) {
 			$t->brands = $this->brandDM->getActiveBrands($this->order, $paginator->getLength(), $paginator->getOffset());
 		} else {
 			$t->brands = $this->brandDM->getActiveBrands(null, $paginator->getLength(), $paginator->getOffset());
 		}
 		$t->paginator = $paginator;
+	}
+
+	/**
+	 * Sets cout of pages shown around actual page
+	 */
+	public function setRadius(int $radius) {
+		$this->radius = $radius;
 	}
 
 	/**
@@ -76,6 +97,11 @@ class BrandsPresenter extends SecuredPresenter {
 	public function handleDeleteBrand(int $id) {
 		$this->brandDM->deleteBrand($id);
 		$this->redrawControl("brandsViewer");
+	}
+
+	public function handleSetItemsPerPage(int $itemsPerPage) {
+		$this->itemsPerPage = $itemsPerPage;
+		$this->redrawControl();
 	}
 
 	/**

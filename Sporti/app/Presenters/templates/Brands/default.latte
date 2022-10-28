@@ -34,21 +34,46 @@
 </div>
 
 <div class="pagination">
-	{if !$paginator->isFirst()}
-		<a n:href="default, 1">První</a>
-		&nbsp;|&nbsp;
-		<a n:href="default, $paginator->page-1">Předchozí</a>
-		&nbsp;|&nbsp;
-	{/if}
+	{* Arrow left *}
+		<a n:if="!$paginator->isFirst()" n:href="default, $paginator->page-1"><i class="fas fa-chevron-left"></i></a>
 
-		Stránka {$paginator->getPage()} z {$paginator->getPageCount()}
+	{* Number One *}
+		<a n:if="$left > 1" n:href="default, $paginator->getFirstPage()">{$paginator->getFirstPage()}</a>
 
-	{if !$paginator->isLast()}
-		&nbsp;|&nbsp;
-		<a n:href="default, $paginator->getPage() + 1">Další</a>
-		&nbsp;|&nbsp;
-		<a n:href="default, $paginator->getPageCount()">Poslední</a>
-	{/if}
+    {* Left dots *}
+	<a n:if="$left > 2" class="disabled">
+			<span>&hellip;</span>
+    </a>
+
+    {* Pages in radius range *}
+	<a n:for="$i = $left; $i <= $right; $i++" n:class="$i == $page ? active">
+			{if $i == $page} {* Active page *}
+				<span>{$i}<span class="sr-only">(current)</span></span>
+			{else}
+				<a n:href="default, $i">{$i}</a>
+			{/if}
+	</a>
+
+	{* Right dots *}
+	<a n:if="$right < $pages - 1" class="disabled">
+			<span>&hellip;</span>
+	</a>
+
+	{* Last page *}
+	<a n:if="$right < $pages" n:href="default, $paginator->getPageCount()">{$paginator->getPageCount()}</a>
+
+	{* Arrow right *}
+	<a n:if="!$paginator->isLast()" n:href="default, $paginator->getPage() + 1"><i class="fas fa-chevron-right"></i></a>
 </div>
 
+<div class="pagination items-count-container">
+	<a n:class="$itemsPerPage == 3 ? active, 'ajax'" n:href="setItemsPerPage! itemsPerPage => 3">3</a>
+	<a n:class="$itemsPerPage == 5 ? active, 'ajax'" n:href="setItemsPerPage! itemsPerPage => 5">5</a>
+	<a n:class="$itemsPerPage == 10 ? active, 'ajax'" n:href="setItemsPerPage! itemsPerPage => 10">10</a>
+</div>
 
+<style>
+	.active {
+		font-weight: bold;
+	}
+</style>

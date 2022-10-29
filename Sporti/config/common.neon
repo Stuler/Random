@@ -38,3 +38,14 @@ di:
 	export:
 		parameters: no
 		tags: no
+
+extensions:
+    webpack: Contributte\Webpack\DI\WebpackExtension(%debugMode%, %consoleMode%)
+
+webpack:
+	build:
+		directory: %wwwDir%/dist
+		publicPath: dist/
+	devServer:
+		enabled: %debugMode%
+		url: http://localhost:8080/assets

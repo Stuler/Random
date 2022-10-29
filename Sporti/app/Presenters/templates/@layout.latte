@@ -19,8 +19,9 @@
 {include content}
 
 {block scripts}
-<script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
-<script src="https://unpkg.com/naja@2/dist/Naja.min.js"></script>
+{*	<script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>*}
+{*	<script src="https://unpkg.com/naja@2/dist/Naja.min.js"></script>*}
+	<script src="{webpack bundle.js}"></script>
 
 {/block}
 </body>

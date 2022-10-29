@@ -5,11 +5,20 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '2af9e8f036daa2faa4fa0c92515901d6656bf753',
+        'reference' => '82d1822a71a4e5af3d5777f462c1a5ca219baa0d',
         'name' => 'nette/web-project',
         'dev' => true,
     ),
     'versions' => array(
+        'contributte/webpack' => array(
+            'pretty_version' => '2.2.1',
+            'version' => '2.2.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../contributte/webpack',
+            'aliases' => array(),
+            'reference' => 'f29901bdcdf2a6481c0845e400b7662555f15ee5',
+            'dev_requirement' => false,
+        ),
         'latte/latte' => array(
             'pretty_version' => 'v2.10.8',
             'version' => '2.10.8.0',
@@ -187,7 +196,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '2af9e8f036daa2faa4fa0c92515901d6656bf753',
+            'reference' => '82d1822a71a4e5af3d5777f462c1a5ca219baa0d',
             'dev_requirement' => false,
         ),
         'symfony/thanks' => array(

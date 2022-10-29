@@ -6,13 +6,14 @@
 <div class="section">
 	<div class="my-content">
 		<a class="ajax" n:href=showAddBrandDialog!>+ Přidat značku</a>
-		<div class="my-modal" n:snippet="modal">
+		{snippet modal}
 			{if isset($showModal)}
-				<a class="ajax float-right" n:href="closeDialog!">X</a>
-				{control formBrand}
+				<div class="my-modal">
+					<a class="ajax float-right" n:href="closeDialog!">X</a>
+					{control formBrand}
+				</div>
 			{/if}
-		</div>
-
+		{/snippet}
 		<div class="section">
 			{snippet viewer}
 				{control viewerComp}

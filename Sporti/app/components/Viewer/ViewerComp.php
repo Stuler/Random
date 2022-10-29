@@ -52,6 +52,11 @@ class ViewerComp extends Control {
 	public int $radius = Constants::PAGES_SHOWN_RADIUS;
 
 	/**
+	 * Options for items per page count
+	 */
+	public array $itemsPerPageOptions = [];
+
+	/**
 	 * Calls processes on DELETE button click event
 	 */
 	public array|\Closure $onDelete;
@@ -80,6 +85,7 @@ class ViewerComp extends Control {
 		$t->left = max($this->page - $this->radius, 1);
 		$t->right = $page + $this->radius <= $pages ? $page + $this->radius : $pages;
 		$t->items = $this->getItemsDataForPaginator($paginator->getLength(), $paginator->getOffset());
+		$t->itemsPerPageOptions = $this->itemsPerPageOptions;
 		$t->paginator = $paginator;
 		$t->setFile(__DIR__ . "/viewerComp.latte");
 		$t->render();
@@ -117,11 +123,22 @@ class ViewerComp extends Control {
 	}
 
 	/**
+	 * Sets an array of items per page choices for paginator
+	 */
+	public function setItemsPerPageOptions(array $options) {
+		$this->itemsPerPageOptions = $options;
+	}
+
+	public function setItemsPerPageDefault(int $itemsPerPage) {
+		$this->itemsPerPage = $itemsPerPage;
+	}
+
+	/**
 	 * Changes view order
 	 */
 	public function handleChangeOrder(string $order) {
 		$this->order = $order;
-		$this->redrawControl("viewer");
+		$this->redrawControl();
 	}
 
 	/**
@@ -129,7 +146,7 @@ class ViewerComp extends Control {
 	 */
 	public function handleSetPage(int $page) {
 		$this->page = $page;
-		$this->redrawControl("viewer");
+		$this->redrawControl();
 	}
 
 	/**
@@ -137,7 +154,7 @@ class ViewerComp extends Control {
 	 */
 	public function handleSetItemsPerPage(int $itemsPerPage) {
 		$this->itemsPerPage = $itemsPerPage;
-		$this->redrawControl("viewer");
+		$this->redrawControl();
 	}
 
 	/**
@@ -145,7 +162,7 @@ class ViewerComp extends Control {
 	 */
 	public function handleShowEditDialog(?int $id) {
 		$this->onClick($id);
-		$this->redrawControl("viewer");
+		$this->redrawControl();
 	}
 
 	/**
@@ -153,6 +170,6 @@ class ViewerComp extends Control {
 	 */
 	public function handleDelete(int $id) {
 		$this->onDelete($id);
-		$this->redrawControl("viewer");
+		$this->redrawControl();
 	}
 }

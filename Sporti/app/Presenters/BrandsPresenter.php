@@ -88,6 +88,8 @@ class BrandsPresenter extends SecuredPresenter {
 		$items = $this->brandRepo->findAllActive();
 		$viewer->setItems($items);
 		$viewer->setColumnLabel("label");
+		$viewer->setItemsPerPageOptions([10, 20, 30]);
+		$viewer->setItemsPerPageDefault(10);
 		$viewer->onDelete[] = function ($id) {
 			$this->brandPM->delete($id);
 		};

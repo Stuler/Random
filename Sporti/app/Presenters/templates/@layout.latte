@@ -7,22 +7,34 @@
 	<title>{ifset title}{include title|stripHtml} | {/ifset}Nette Web</title>
 </head>
 
-<body>
-<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+<body class="grey lighten-4">
+<div class="row">
+	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
-<div class="menu-container">
-	<a n:href="Dashboard:default">Nástěnka</a>
-	<a n:href="Settings:default">Nastavení</a>
-	<a n:href="Brands:default">Značky</a>
-</div>
+	<div class="col s1 blue accent-4">
+		<div class="row">
+			<div class="my-vertical-navbar blue accent-4">
+				<a class="icon" n:href="Dashboard:default"><i class="fas fa-chalkboard"></i></a>
+				<a class="icon" href="#"><i class="fas fa-users"></i></a>
+				<a class="icon" n:href="Settings:default"><i class="fas fa-exclamation-circle"></i></a>
+				<a class="icon" n:href="Brands:default"><i class="fas fa-tag"></i></a>
+			</div>
+		</div>
+	</div>
 
-{include content}
+	<div class="col s11">
+		<div class="row">
+			<div class="my-banner my-header blue accent-4">SRP</div>
+			{include content}
+		</div>
+	</div>
 
-{block scripts}
-{*	<script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>*}
-{*	<script src="https://unpkg.com/naja@2/dist/Naja.min.js"></script>*}
+	{block scripts}
+	{*	<script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>*}
+	{*	<script src="https://unpkg.com/naja@2/dist/Naja.min.js"></script>*}
 	<script src="{webpack bundle.js}"></script>
 
-{/block}
+	{/block}
+</div>
 </body>
 </html>

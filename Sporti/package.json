@@ -1,14 +1,27 @@
 {
 	"license": "MIT",
 	"scripts": {
+		"watch": "./node_modules/.bin/webpack -d",
 		"start": "webpack-dev-server --config ./webpack.config.js --mode development",
 		"build": "cross-env NODE_ENV=production webpack"
 	},
 	"dependencies": {
 		"@babel/core": "^7.19.6",
+		"autoprefixer": "^10.4.13",
 		"babel-loader": "^9.0.0",
+		"css-loader": "^6.7.1",
+		"dart-sass": "^1.25.0",
+		"materialize": "^1.0.0",
+		"materialize-css": "^1.0.0-rc.2",
+		"mini-css-extract-plugin": "^2.6.1",
 		"naja": "^2.5.0",
-		"nette-forms": "^3.3.1"
+		"nette-forms": "^3.3.1",
+		"node-sass": "^7.0.3",
+		"postcss-loader": "~3.0.0",
+		"resolve-url-loader": "^5.0.0",
+		"sass": "^1.55.0",
+		"sass-loader": "^13.1.0",
+		"style-loader": "^3.3.1"
 	},
 	"devDependencies": {
 		"cross-env": "^7.0.3",

@@ -1,16 +1,22 @@
 {block content}
-
-<div class="section-header">
-	<a n:href="Homepage:default"><i class="fas fa-arrow-left"></i></a>
-	<h2>Značky</h2>
+<div class="section section-header blue accent-2">
+	<span><a n:href="Homepage:default"><i class="fas fa-arrow-left"></i></a> Značky</span>
 </div>
 
-<a class="ajax" n:href=showAddBrandDialog!>+ Přidat značku</a>
-{snippet modal}
-	{if isset($showModal)}
-		<a class="ajax float-right" n:href="closeDialog!">X</a>
-		{control formBrand}
-	{/if}
-{/snippet}
+<div class="section">
+	<div class="my-content">
+		<a class="ajax" n:href=showAddBrandDialog!>+ Přidat značku</a>
+		<div class="my-modal" n:snippet="modal">
+			{if isset($showModal)}
+				<a class="ajax float-right" n:href="closeDialog!">X</a>
+				{control formBrand}
+			{/if}
+		</div>
 
-{control viewerComp}
+		<div class="section">
+			{snippet viewer}
+				{control viewerComp}
+			{/snippet}
+		</div>
+	</div>
+</div>

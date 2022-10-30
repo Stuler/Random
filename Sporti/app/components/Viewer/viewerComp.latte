@@ -3,8 +3,8 @@
 		<thead>
 		<tr class="my-table-head">
 			<th>Název
-				<a n:class="$order === App\types\Enum\EOrderType::getASC() ? activeOrder, 'ajax'" n:href="changeOrder! order=>App\types\Enum\EOrderType::getASC()"><i class="fas fa-arrow-up"></i></a>
-				<a n:class="$order === App\types\Enum\EOrderType::getDESC() ? activeOrder, 'ajax'" n:href="changeOrder! order=>App\types\Enum\EOrderType::getDESC()"><i class="fas fa-arrow-down"></i></a>
+				<a class="ajax" n:href="changeOrder! order=>App\types\Enum\EOrderType::getASC()"><i class="fas fa-arrow-up"></i></a>
+				<a class="ajax" n:href="changeOrder! order=>App\types\Enum\EOrderType::getDESC()"><i class="fas fa-arrow-down"></i></a>
 			</th>
 			<th style="text-align: right">Akce</th>
 		</tr>

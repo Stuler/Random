@@ -41,7 +41,7 @@ class BrandsPresenter extends SecuredPresenter {
 				$this->brandFormDS->getDefaults($id)
 			);
 		}
-		$this->redrawControl();
+		$this->redrawControl("modal");
 	}
 
 	/**

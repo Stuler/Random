@@ -55,10 +55,9 @@ class UserManager implements Authenticator {
 
 		if (!$row) {
 			throw new AuthenticationException('Uživate nenalezen.');
-		} elseif (!$this->passwords->verify($password, $row->password)) {  // Ověří zadané heslo.
+		} elseif (!$this->passwords->verify($password, $row->password)) {
 			throw new AuthenticationException('Zadané heslo není správně.');
-		} elseif ($this->passwords->needsRehash($row->password)) { // Zjistí zda heslo potřebuje rehashovat.
-			// Rehashuje heslo (bezpečnostní opatření).
+		} elseif ($this->passwords->needsRehash($row->password)) {
 			$row->update([
 				'password' => $this->passwords->hash($password),
 			]);

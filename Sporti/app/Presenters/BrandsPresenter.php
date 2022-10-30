@@ -90,6 +90,7 @@ class BrandsPresenter extends SecuredPresenter {
 		$viewer->setColumnLabel("label");
 		$viewer->setItemsPerPageOptions([5, 10, 15]);
 		$viewer->setItemsPerPageDefault(5);
+
 		$viewer->onDelete[] = function ($id) {
 			try {
 				$this->brandPM->delete($id);

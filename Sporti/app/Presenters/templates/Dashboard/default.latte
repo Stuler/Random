@@ -3,3 +3,93 @@
 <div class="section section-header blue accent-2">
 	<span style="padding-left: 15px">Nástěnka</span>
 </div>
+
+<div class="section">
+	<div class="my-content">
+		<section>
+			<h5>Zadání</h5>
+			<p>
+				Cílem zadání bylo naprogramovat aplikaci podle grafického návrhu za pomoci Nette frameworku, databáze MySQL, SASS a knihovny Materialize.
+			</p>
+			<p>
+				<b>Požadavky:</b>
+			<ol>
+				<li>Vylistování všech značek</li>
+				<ul>
+					<li>Řazení pomocí názvu značky (vzestupně, sestupně)</li>
+					<li>Stránkování (včetně změny počtu položek na stránku)</li>
+					<li>Editace značky – jednoduchý popup</li>
+					<li>Smazání značky</li>
+				</ul>
+				<li>Přidání nové značky – jednoduchý popup</li>
+			</ol>
+			</p>
+			<p>
+				<b>Výstupy:</b>
+			<ol>
+				<li>Návrh databáze – v čitelné podobě (ideálně ER diagram) – png, pdf</li>
+				<li>SQL pro vytvoření a iniciální naplnění databáze</li>
+				<li>Zdrojové kódy aplikace + composer.json soubor popisující závislosti aplikace</li>
+				<li>CSS knihovna frameworku Materialize CSS, připojená do aplikace</li>
+				<li>SASS soubor s vlastními styly (přizpůsobení prvků knihovny Materialize)</li>
+				<li>Přeložený SASS soubor ve formě CSS, připojený do aplikace</li>
+			</ol>
+			</p>
+		</section>
+
+		<section>
+			<h5>Návrh databáze</h5>
+			<p>
+				Databáze počíta s budoucím rozšířením o sekci uživatelů, kompletní autentizaci a autorizaci a jednoduchou správu kategorií značek.
+				Jelikož to nebylo součástí zadání, nejsou tyto sekce do aplikace implementovány. V případě potřeby je možné nasadit v příští iteraci.
+			</p>
+			<p>
+				Databáze je v souladu s aplikací navržena a prispůsobena na lazy-delete, resp. záznamy v databázi se fyzicky nemažou, jen se jim nastaví příznak
+				date_deleted a deleted_by s referencí na ID uživatele, který položku odstranil.
+			</p>
+			<p>
+				V tříde App/Model/Basemodel/Basemodel.php jsou uvedeny všechny základní metody, operující s databázi.
+				Od této třídy dědí všehny třídy ve složce App/Model/Repository/Table. Tato vrstva obsluhuje veškeré ditazy na databázi.
+			</p>
+			<a href="/images/sporti_db_diagram.png" target="_blank"><img height="300px" src="/images/sporti_db_diagram.png"/></a>
+		</section>
+
+		<section>
+			<h5>SQL pro vytvoření a iniciální naplnění databáze</h5>
+			<p>
+				Soubory, obsahující skripty pro vytvoření databáze (<a href="/files/schema.sql">schema.sql</a>)
+				a testovacími daty (<a href="/files/dataset.sql">dataset.sql</a>) se nachází ve složce app/database. Napřed je nutné vytvoření databáze s názvem
+				<strong>"sporti"</strong> podle configuračního souboru.
+			</p>
+		</section>
+
+		<section>
+			<h5>Zdrojové kódy aplikace</h5>
+			<p>
+				Samotný kód aplikace je jednoduchý. Aplikace pozostává ze dvou základních presenterů.
+				Tato nástěnka je znázorněna třídou DashboardPresenter a router se stará o to, aby Vás sem přesměroval po spuštění projektu.
+				Dalším funkčním presenterem je <a n:href="Brands:default" target="_blank">BrandsPresenter</a>, kde e obsáhnuta funkční část zadání.
+				Byly v přípravě taky vrstvy, starající se o správu uživatelů a správu globálních nastavení aplikace, ale jelikož byly mimo zádání,
+				v rámci časové úspory bylo rozhodnuto tyto vrstvy neimplementovat.
+			</p>
+			<p>
+				O výpis značek se stará komponenta Viewer, ve které jsou zahrnuty základní funkce výpysu položek: řazení, stránkování a callbacky pro editaci a mazání.
+				Tuto část aplikace jsem se rozhodl umístit do samostatné komponenty z důvodu vysoké pravděpodobnost její využití v ostatních sekcích.
+			</p>
+		</section>
+
+		<section>
+			<h5>Materialize + SASS + styly</h5>
+			<p>
+				Jelikož se stylovaním mám jenom velice malé zkušenosti a s knihovnou Materialize a soubory sass jsou mé zkušenosti veškeré žádné, byla tahle část zadání pro
+				mně největší výzvou. Dlouho se mi nedařilo nastavit webpack tak, aby úspěšne kompiloval soubory sass a scss, obsáhnuty v knihovně Materialize.
+				Nakonec se mi to za cenu velikých časových prostojů podařilo, ale na úkor absence sekce pro zprávu uživatelů.
+			</p>
+			<p>
+				Po úspěšné implementaci Veškerých stylů a knihovny Materialize jsem se pokusil nastylovat aplikaci podle přiloženého návrhu.
+				Bohužel se mi nepodařilo nastylovat select input základního Nette formuláře, proto v editací značek chybý select input pro kategorii značky.
+				Při stylování jsem si pomohl .sass souborem s vlastními styly, nacházejícím se ve složce src/css/sass.
+			</p>
+		</section>
+	</div>
+</div>

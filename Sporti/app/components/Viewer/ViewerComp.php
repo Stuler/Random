@@ -80,6 +80,7 @@ class ViewerComp extends Control {
 		$pages = $paginator->getPageCount();
 
 		$t->itemsPerPage = $this->itemsPerPage;
+		$t->order = $this->order;
 		$t->page = $page;
 		$t->pages = $pages;
 		$t->left = max($this->page - $this->radius, 1);

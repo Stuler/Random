@@ -3,8 +3,8 @@
 		<thead>
 		<tr class="my-table-head">
 			<th>Název
-				<a class="ajax" n:href="changeOrder! order=>App\types\Enum\EOrderType::getASC()"><i class="fas fa-arrow-up"></i></a>
-				<a class="ajax" n:href="changeOrder! order=>App\types\Enum\EOrderType::getDESC()"><i class="fas fa-arrow-down"></i></a>
+				<a n:class="$order === App\types\Enum\EOrderType::getASC() ? activeOrder, 'ajax'" n:href="changeOrder! order=>App\types\Enum\EOrderType::getASC()"><i class="fas fa-arrow-up"></i></a>
+				<a n:class="$order === App\types\Enum\EOrderType::getDESC() ? activeOrder, 'ajax'" n:href="changeOrder! order=>App\types\Enum\EOrderType::getDESC()"><i class="fas fa-arrow-down"></i></a>
 			</th>
 			<th style="text-align: right">Akce</th>
 		</tr>
@@ -23,47 +23,56 @@
 	</table>
 </div>
 
-<div class="pagination" n:snippet="pagination">
-	{*	 Arrow left*}
-		<a class="ajax" n:if="!$paginator->isFirst()" n:href="setPage!, $paginator->page-1"><i class="fas fa-chevron-left"></i></a>
+<div class="col s1 offset-s11" style="text-align: right">
+	<div class="row">
+		<div class="pagination" n:snippet="pagination">
+			{*	 Arrow left*}
+		<a class="ajax pagination-char" n:if="!$paginator->isFirst()" n:href="setPage!, $paginator->page-1"><i class="fas fa-chevron-left"></i></a>
 
 {*	 Number One*}
-		<a class="ajax" n:if="$left > 1" n:href="setPage!, $paginator->getFirstPage()">{$paginator->getFirstPage()}</a>
+		<a class="ajax pagination-char" n:if="$left > 1" n:href="setPage!, $paginator->getFirstPage()">{$paginator->getFirstPage()}</a>
 
 {*     Left dots*}
-	<a class="ajax" n:if="$left > 2" class="disabled">
-			<span>&hellip;</span>
+	<a class="ajax pagination-char" n:if="$left > 2" class="disabled">
+					<span>&hellip;</span>
     </a>
 
 {*     Pages in radius range*}
 	<a n:for="$i = $left; $i <= $right; $i++" n:class="$i == $page ? active, ajax">
-			{if $i == $page}
-				<span>{$i}<span class="sr-only">(current)</span></span>
-			{else}
-				<a class="ajax" n:href="setPage!, $i">{$i}</a>
-			{/if}
+					{if $i == $page}
+						<span>{$i}<span class="sr-only pagination-char">(current)</span></span>
+					{else}
+						<a class="ajax pagination-char" n:href="setPage!, $i">{$i}</a>
+					{/if}
 	</a>
 
 {*	 Right dots*}
 	<a n:if="$right < $pages - 1" class="disabled ajax">
-			<span>&hellip;</span>
+					<span>&hellip;</span>
 	</a>
 
 {*	 Last page*}
-	<a class="ajax" n:if="$right < $pages" n:href="setPage!, $paginator->getPageCount()">{$paginator->getPageCount()}</a>
+	<a class="ajax pagination-char" n:if="$right < $pages" n:href="setPage!, $paginator->getPageCount()">{$paginator->getPageCount()}</a>
 
 {*	 Arrow right*}
-	<a class="ajax" n:if="!$paginator->isLast()" n:href="setPage!, $paginator->getPage() + 1"><i class="fas fa-chevron-right"></i></a>
-</div>
+			<a class="ajax pagination-char" n:if="!$paginator->isLast()" n:href="setPage!, $paginator->getPage() + 1"><i class="fas fa-chevron-right"></i></a>
+		</div>
 
-<div class="pagination items-count-container">
-	{foreach $itemsPerPageOptions as $item}
-		<a n:class="$itemsPerPage === $item ? active, 'ajax'" n:href="setItemsPerPage! itemsPerPage => $item">{$item}</a>
-	{/foreach}
+		<div class="pagination items-count-container" n:snippet="itemsCount">
+			{foreach $itemsPerPageOptions as $item}
+				{dump $itemsPerPage}
+				<a n:class="$itemsPerPage === $item ? active, 'ajax pagination-char'" n:href="setItemsPerPage! itemsPerPage => $item">{$item}</a>
+			{/foreach}
+		</div>
+	</div>
 </div>
 
 <style>
 	.active {
 		font-weight: bold;
+	}
+
+	.activeOrder {
+		color: black;
 	}
 </style>

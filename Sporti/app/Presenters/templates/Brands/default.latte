@@ -1,12 +1,12 @@
 {block content}
 
 <div class="section section-header blue accent-2">
-	<span><a n:href="Homepage:default"><i class="fas fa-arrow-left"></i></a> Značky</span>
+	<span><a n:href="Dashboard:default"><i class="fas fa-arrow-left"></i></a> Značky</span>
 </div>
 
 <div class="section">
 	<div class="my-content">
-		<a class="ajax" n:href=showAddBrandDialog!>+ Přidat značku</a>
+		<a class="ajax my-btn blue accent-2" n:href=showAddBrandDialog!>+ Přidat značku</a>
 		{snippet modal}
 			{if isset($showModal)}
 				<div class="my-modal">

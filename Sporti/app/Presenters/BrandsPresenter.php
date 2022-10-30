@@ -28,8 +28,7 @@ class BrandsPresenter extends SecuredPresenter {
 	/**
 	 * TODO: move paginator config into component
 	 */
-	public function renderDefault(int $page = 1) {
-
+	public function renderDefault() {
 	}
 
 	/**
@@ -63,8 +62,8 @@ class BrandsPresenter extends SecuredPresenter {
 		$brandCategories = $this->brandCategoryRepo->findAllActive()->fetchPairs("id", "label");
 
 		$form->addHidden("id");
-		$form->addText("label", "Název")->setRequired();
-		$form->addSelect("brand_category_id", "Kategorie", $brandCategories)->setRequired()->setPrompt("?");
+		$form->addText("label", "Název")->setRequired("Položka 'Název' musí být vyplněna!");
+		$form->addSelect("brand_category_id", "Kategorie", $brandCategories)->setHtmlAttribute("class", "input-field")->setPrompt("?");
 		$form->addText("description", "Popis");
 		$form->addTextArea("note", "Poznámka");
 		$form->addSubmit("save", "Uložit");
@@ -74,6 +73,7 @@ class BrandsPresenter extends SecuredPresenter {
 				$this->flashMessage('Značka úspěšně uložena.', 'ok');
 				$this->redrawControl();
 			} catch (BrandsException $e) {
+				$this->redrawControl("flashes");
 				$this->flashMessage($e->getMessage(), 'err');
 			}
 		};
@@ -88,10 +88,17 @@ class BrandsPresenter extends SecuredPresenter {
 		$items = $this->brandRepo->findAllActive();
 		$viewer->setItems($items);
 		$viewer->setColumnLabel("label");
-		$viewer->setItemsPerPageOptions([10, 20, 30]);
-		$viewer->setItemsPerPageDefault(10);
+		$viewer->setItemsPerPageOptions([5, 10, 15]);
+		$viewer->setItemsPerPageDefault(5);
 		$viewer->onDelete[] = function ($id) {
-			$this->brandPM->delete($id);
+			try {
+				$this->brandPM->delete($id);
+				$this->flashMessage('Značka úspěšně odstráněna.', 'ok');
+				$this->redrawControl("flashes");
+			} catch (\Exception $e) {
+				$this->redrawControl("flashes");
+				$this->flashMessage($e->getMessage(), 'err');
+			};
 		};
 
 		$viewer->onClick[] = function (?int $id) {

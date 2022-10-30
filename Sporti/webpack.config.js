@@ -1,28 +1,39 @@
 const path = require('path');
 
 module.exports = {
-	mode         : (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-	resolve      : {
+	ignoreWarnings: [
+		{
+			module: /materialize.scss/gm, // A RegExp
+		},
+		{
+			module : /materialize.scss/gm,
+			message: /homepage/,
+		},
+		/warning from compiler/,
+		(warning) => true,
+	],
+	mode          : (process.env.NODE_ENV === 'production') ? 'production' : 'development',
+	resolve       : {
 		extensions: [".js", ".json"],
 	},
-	resolveLoader: {
+	resolveLoader : {
 		modules: [
 			'node_modules',
 		]
 	},
-	output       : {
+	output        : {
 		filename  : 'bundle.js',
 		path      : __dirname + "/www/assets",
 		publicPath: "/assets/",
 	},
-	devServer    : {
+	devServer     : {
 		static  : {
 			directory: path.join(__dirname, '/www/assets'),
 		},
 		compress: true,
 		port    : 8080,
 	},
-	module       : {
+	module        : {
 		rules: [
 			{
 				test: /\.(jpe?g|png|gif|webp|eot|ttf|woff|woff2|svg|)$/i,

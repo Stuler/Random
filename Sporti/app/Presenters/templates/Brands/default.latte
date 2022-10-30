@@ -1,4 +1,5 @@
 {block content}
+
 <div class="section section-header blue accent-2">
 	<span><a n:href="Homepage:default"><i class="fas fa-arrow-left"></i></a> Značky</span>
 </div>
@@ -9,7 +10,10 @@
 		{snippet modal}
 			{if isset($showModal)}
 				<div class="my-modal">
-					<a class="ajax float-right" n:href="closeDialog!">X</a>
+					<a class="ajax" style="text-align: right" n:href="closeDialog!">X</a>
+					{snippet flashes}
+						<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+					{/snippet}
 					{control formBrand}
 				</div>
 			{/if}
@@ -21,3 +25,4 @@
 		</div>
 	</div>
 </div>
+

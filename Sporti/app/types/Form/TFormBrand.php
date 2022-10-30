@@ -8,5 +8,5 @@ class TFormBrand {
 	public string $label;
 	public string $description;
 	public string $note;
-	public int $brand_category_id;
+	public ?int $brand_category_id;
 }

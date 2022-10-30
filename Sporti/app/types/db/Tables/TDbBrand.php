@@ -9,7 +9,7 @@ use Nette\Utils\ArrayHash;
  * Table: brand
  * @property int                        $id;
  * @property string                     $label;
- * @property int                        $brand_category_id;
+ * @property ?int                       $brand_category_id;
  * @property string                     $description;
  * @property string                     $note;
  * @property int                        $created_by;

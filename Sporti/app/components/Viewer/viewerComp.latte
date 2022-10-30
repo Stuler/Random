@@ -58,7 +58,7 @@
 
 <div class="pagination items-count-container">
 	{foreach $itemsPerPageOptions as $item}
-		<a n:class="$itemsPerPage == $item ? active, 'ajax'" n:href="setItemsPerPage! itemsPerPage => $item">{$item}</a>
+		<a n:class="$itemsPerPage === $item ? active, 'ajax'" n:href="setItemsPerPage! itemsPerPage => $item">{$item}</a>
 	{/foreach}
 </div>
 
